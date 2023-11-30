@@ -1,0 +1,95 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+    background-color: lightslategray;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+.button-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin-top: 20px; */
+}
+
+#deck-amount-input {
+    margin-bottom: 10px;
+    width: 35px;
+    height: 35px;
+    color: black;
+    background-color: lightgray;
+
+}
+
+.containall {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    margin-top: 50px;
+
+}
+
+.container-house,
+.container-player {
+    display: grid;
+    width: 800px;
+    height: 700px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    background-color: white;
+}
+
+.card-house-start {
+
+}
+
+p {
+    font-size: 40px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#house-value {
+    font-size: 40px;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+#player-value {
+    font-size: 40px;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+
+.house-rule-c {
+    margin-top: 500px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.action-buttons {
+    margin-top: 500px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#house_rule {
+    font-size: 17px;
+}

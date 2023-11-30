@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>BlackJack Counting</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <h1>BlackJack Made By William-Kostreski</h1>
+  <br>
+  <div class="button-section">
+    <h2>Put How Many Decks You want</h2>
+    <h3>Each Deck Contains 52 Cards/ 4 of Each Value - 1 of each suite</h3>
+  <input type="text" id="deck-amount-input" placeholder="1">
+  <button id="deck-amount">Submit</button>
+  </div>
+  
+ <div class="containall">
+    <div class="container-house">
+        <div class="move-me"><p>House:</p><span id="house-value"></span></div>
+        <div class="card-house-start">
+        
+
+        </div>
+        <div class="house-rule-c">
+        <p id="house_rule">The Dealer's Play
+            If the total is 17 or more, it must stand. If the total is 16 or under, they must take a card. The dealer must continue to take cards until the total is 17 or more, at which point the dealer must stand.</p>
+        </div>
+    </div>
+    
+
+    <div class="container-player">
+        <div class="move-me"><p>Player:</p><span id="player-value"></span></div>
+        <div class="card-player-start">
+        
+
+        </div>
+        <div class="action-buttons">
+            <button id="hit">Hit</button>
+            <button id="stand">Stand</button>
+        </div>
+    </div>
+
+ </div>
+
+
+ <script src="script.js"></script>
+  
+</body>
+
+</html>
