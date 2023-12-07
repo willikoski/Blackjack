@@ -121,6 +121,11 @@ class BlackjackGame {
             return card;
     }
 
+    formatHand(hand) {
+        return hand.map(card => `${card.rank} of ${card.suit}`).join(', ');
+      }
+    }
+
     hit() {
         if (this.calculateHandValue(this.playerHand) < 21) {
             this.playerHand.push(this.drawCard());
@@ -239,7 +244,7 @@ class BlackjackGame {
       const container = document.querySelector(".card-house-start");
       container.innerHTML = "";
   
-      for (let i = 0; i < this.dealerHand.length; i++) {
+        for (let i = 0; i < this.dealerHand.length; i++) {
           const card = this.dealerHand[i];
           const cardContainer = document.createElement("div");
   
@@ -253,20 +258,20 @@ class BlackjackGame {
           cardContainer.appendChild(cardImage);
           cardContainer.appendChild(cardText);
           container.appendChild(cardContainer);
-      }
+        }
       // Display the total value for the visible cards
       const visibleCards = this.dealerHiddenCardVisible ? this.dealerHand : this.dealerHand.slice(1);
       const houseValue = this.calculateHandValue(visibleCards);
       document.getElementById("house-value").textContent = houseValue;
-  }
+    }
 
-  resetHands() {
-    this.playerHand = [];
-    this.dealerHand = [];
+    resetHands() {
+        this.playerHand = [];
+        this.dealerHand = [];
   
-    // update UI for hands
-    this.displayHands();
-  }
+         // update UI for hands
+        this.displayHands();
+    }
 
     updateRoundsWon() {
 
@@ -290,24 +295,14 @@ class BlackjackGame {
     }
 
     restartGame() {
-
-    }
-
-    
+        this.gameInProgress = false;
+        this.betAmountInput.disabled = false;
+        this.placeBetButton.disabled = false;
+      }
 
     displayDeadPileCount() {
 
     }
-
-    formatHand(hand) {
-
-    }
-}
-
-
-
-
-
 // Global Functions
 
 function updateCardUI(hand, containerId) {
