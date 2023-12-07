@@ -81,12 +81,45 @@ class BlackjackGame {
     }
 
     startGame(deckAmount) { // Start game method will be used to determine how many dekcs were created.
-
-    }
+            // Check if a game is already in progress
+            if (this.gameInProgress) {
+                console.error("A game is already in progress.");
+                return;
+            }
+        
+            game = this;
+            // create a deck if it doesnt exist
+            if (!this.deck || this.deck.length === 0) {
+                this.deck = this.createDeck(deckAmount);  // Pass deckAmount here
+                this.deck = this.shuffleDeck([...this.deck]); // this.deck might be more then one, and at startgame we are running shuffleDeck.
+            }
+        
+            // this.deckAmount = deckAmount;
+            this.playerHand = [];
+            this.dealerHand = [];
+            this.currentBet = 0;
+            this.deadPile = [];
+            this.roundsWon = 0;
+            this.gameOver = false; // Reset gameOver to false
+            this.dealerHiddenCardVisible = false; // Reset the flag
+        
+        
+            // Update the card counter directly here
+            // this.updateCardCounter(); // gonna call this later for our updateCardCounter method
+            updateUI(); // gonna call this later once the method exists
+        }
 
     drawCard() {
-
-    }
+            if (this.deck.length === 0) { 
+                this.deck = this.shuffleDeck([...this.deadPile]); // shuffleDeck  at 0 deck length.
+            }
+        
+            const card = this.deck.pop(); // pop a card from the deck array
+            // this.deadPile.push(card); // for the deadPile method we are gonna push a card for the counter then later call the updateCardCounter
+            // this.updateCardCounter(); // Add this line
+            console.log("Card drawn:", card); // Add this line
+            return card;
+        }
 
     updateRoundsWon() {
 

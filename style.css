@@ -238,6 +238,7 @@ label[for="bet-amount"] {
     border-radius: 4px; 
     display: inline-block;
     vertical-align: middle;
+    cursor: pointer;
 }
 
 #cheat-sheet:checked {
@@ -272,4 +273,11 @@ label[for="music-all"] {
     color: white;
     margin-right: 10px;
     vertical-align: middle;
+}
+
+#music-all {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border: 2px solid blue; 
 }
