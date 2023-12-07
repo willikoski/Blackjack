@@ -3,6 +3,10 @@ body {
     height: 100%;
     width: 100%;
     background-color: lightslategray;
+    background-image: url('images/background.jpg');
+    background-size: cover; /* Adjust as needed */
+    background-position: center; /* Adjust as needed */
+    background-repeat: no-repeat;
   }
   
   body {
@@ -18,27 +22,47 @@ h1 {
     text-align: center;
 }
 
+h1,
+h2,
+h3,
+.p-deck-amount {
+    color: white;
+    line-height: 10px;
+    font-size: 25px;
+}
+
 .button-section {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: darkslategray;
+    border-radius: 10px;
+    padding: 20px;
     /* margin-top: 20px; */
+    opacity: .9;
+}
+
+.card-container {
+    margin-left: 10px; /* Adjust the margin as needed */
 }
 
 #deck-amount-input {
     margin-bottom: 10px;
-    width: 35px;
-    height: 35px;
-    color: black;
-    background-color: lightgray;
+    font-size: 20px;
+    font-weight: bold;
+    width: 40px;
+    height: 30px;
+    color: limegreen;
+    background-color: white;
 
 }
 
 .containall {
     display: flex;
+    
     justify-content: space-around;
     width: 80%;
-    margin-top: 50px;
+    margin-top: 22px;
 
 }
 
@@ -50,15 +74,18 @@ h1 {
     border: 1px solid #ccc;
     padding: 20px;
     text-align: center;
-    background-color: white;
+    background-color: darkslategray;
+    border-radius: 15px;
+    opacity: .9;
 }
 
-.card-house-start {
-
+.card-house-start,
+.card-player-start{
+display: flex;
 }
 
 p {
-    font-size: 40px;
+    font-size: 25px;
     margin-top: 10px;
     font-weight: bold;
 }
@@ -77,19 +104,172 @@ p {
 
 
 .house-rule-c {
+    position: absolute;
+    top: 49.5%;
+    left: 30%;
+    transform: translate(-50%, -50%);
     margin-top: 500px;
-    max-width: 600px;
+    max-width: 840px;
+    border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
+    background-color: white;
 }
 
 .action-buttons {
+    position: absolute;
+    top: 40%;
+    left: 70%;
+    transform: translate(-50%, -50%);
     margin-top: 500px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
 }
 
+.action-buttons button,
+#place-bet {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: limegreen;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+#place-bet:hover {
+transform: scale(1.05);
+background-color: blue;
+}
+
+.action-buttons button:hover {
+    background-color: blue;
+    transform: scale(1.05);
+}
+
 #house_rule {
-    font-size: 17px;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+}
+
+label[for="bet-amount"] {
+
+    font-size: 22px;
+    color: white;
+    margin-right: 10px;
+}
+
+#place-bet {
+    display: none;
+  }
+
+#bet-amount,
+#place-bet {
+    padding: 10px;
+    font-size: 20px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+#bet-amount:hover,
+#bet-amount:focus {
+    border-color: #2980b9;
+}
+
+.card-counter-container {
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 24.5%;
+    left: 69%;
+    transform: translate(-50%, -50%);
+    color: white;
+    margin: 10px; 
+}
+
+.dead-pile {
+    position: absolute;
+    top: 87%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+}
+
+.dead-pile span {
+    color: white;
+}
+
+
+#deck-amount {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #deck-amount:hover {
+    background-color: #45a049;
+  }
+
+
+
+/* Cheat sheet */
+.cheat-sheet {
+    position: absolute;
+    top: 16%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+}
+
+#cheat-sheet {
+    appearance: none;
+    color: limegreen;
+    width: 25px;
+    height: 25px;
+    border: 2px solid blue; 
+    border-radius: 4px; 
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#cheat-sheet:checked {
+    background-color: limegreen;
+    border-color: limegreen;
+}
+
+label[for="cheat-sheet"] {
+    font-size: 22px;
+    color: white;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.cheat-sheet img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cheat-sheet input:checked + label + br + img {
+    opacity: 1;
+}
+
+.Music {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+}
+
+label[for="music-all"] {
+    font-size: 22px;
+    color: white;
+    margin-right: 10px;
+    vertical-align: middle;
 }

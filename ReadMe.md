@@ -1,38 +1,35 @@
-Create a for loop for amount of decks,
+Welcome To My JS BlackJack Project
 
-Create A Main Class, and set objects of what card face has what value
--if statement for if more then 21 value an ACE card is valued at 1
+Creator: William Kostreski
+LinkedIn: https://www.linkedin.com/in/william-kostreski/
+Github: https://github.com/willikoski
 
+In this project, I wanted to see if it was possible of completing the game using the Class method, of making a fully functional game.
 
-A Bust function if lost (over 21)
+-----------------------------------------------------------------------Functionality of the game----------------------------------------------------------------------------------------------
 
-A monetary value
--Lose what you bet
--Gain on Win
--Blackjacks=INSTANT win 1.5x 
+Logic - I wanted to create a blackjack game where users can try counting cards. Most casinos use more then 4 decks to avoid or minimize card counters so they maintain the house edge.     ---
 
+Functionality - Users will be allowed to choose how many decks they'd like the game to have.                                                                                               ---
 
-After win it actually takes from the deck count, 52 cards took 5 before= 47
+Functionality 2. - Cards left, and deadpile of cards will be tracked live time after every hand, so users may try tracking what the dealer has.                                            ---
 
+Cheat sheet - The input for cheat sheet is something most casinos will allow at the table, It more of a recommendation of how to play the game, wether to hit or stand / Not actual cheats.---
 
+If Music gets in the way please use the mute all input bottom right of the users table side.                                                                                               ---
 
-if the deck is at ITS half value, it will reshuffle with the full amount
+Cheat codes to keep your balance up, on keypress "v" the user will add 10,000 currency to his overall balance, and keypress "b" will give the user a blackjack "May break the card count"  ---
 
+Force Reshuffle once the deck hits 0 cards left                                                                                                                                            ---
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-Make it so every hit the player takes the House will reply, or show its card.
--House has a rule it must hit below 17-BUT it will ALSO hit if theirs an ACE
-
-
-
-
+Structure was created first, with a Main Class, and an array system where images and values are created with images pulled based off image name.
 
 
 
 
+Future Updates: Better visuals / And a split function. 
 
+Disclaimer, all images, sounds, music are royalty free.
 
-
-
-
-Add at least one sound effect (On win Maybe)
+I will not be re creating this proejct using a different system then Class.

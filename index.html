@@ -9,46 +9,74 @@
 </head>
 
 <body>
+
+  <div class="cheat-sheet">
+    <input type="checkbox" id="cheat-sheet" name="cheat-sheet"/>
+    <label for="cheat-sheet">Cheat-Sheet</label>
+    <br>
+    <img src="images/cheatsheet.png" alt="Cheat Sheet" id="cheat-sheet-image">
+  </div>
+  <div class="card-counter-container">Amount of cards left:
+  <span class="card-counter">0</span>
+  </div>
   <h1>BlackJack Made By William-Kostreski</h1>
   <br>
   <div class="button-section">
     <h2>Put How Many Decks You want</h2>
-    <h3>Each Deck Contains 52 Cards/ 4 of Each Value - 1 of each suite</h3>
-  <input type="text" id="deck-amount-input" placeholder="1">
-  <button id="deck-amount">Submit</button>
+    <h3>Each Deck Contains 52 Cards/ 1 Of Each Suite</h3>
+    <p class="p-deck-amount">Must Choose A Deck Amount To Start Betting</p>
+    <input type="text" id="deck-amount-input" placeholder="1">
+    <button id="deck-amount">Submit</button>
   </div>
-  
- <div class="containall">
-    <div class="container-house">
-        <div class="move-me"><p>House:</p><span id="house-value"></span></div>
-        <div class="card-house-start">
-        
 
-        </div>
-        <div class="house-rule-c">
-        <p id="house_rule">The Dealer's Play
-            If the total is 17 or more, it must stand. If the total is 16 or under, they must take a card. The dealer must continue to take cards until the total is 17 or more, at which point the dealer must stand.</p>
-        </div>
+  <div class="containall">
+    <div class="container-house">
+      <div class="move-me">
+        <p>House</p><span id="house-value">0</span>
+        <p>Rounds Won: <span id="house-rounds-won">0</span></p>
+      </div>
+      <div class="card-house-start"></div>
+      <div class="house-rule-c">
+        <p id="house_rule">HOUSE RULES <br>The Dealer's Play
+          If the total is 17 or more, it must stand. If the total is 16 or under, they must take a card. The dealer must continue to take cards until the total is 17 or more, at which point the dealer must stand.</p>
+      </div>
     </div>
-    
 
     <div class="container-player">
-        <div class="move-me"><p>Player:</p><span id="player-value"></span></div>
-        <div class="card-player-start">
-        
-
-        </div>
-        <div class="action-buttons">
-            <button id="hit">Hit</button>
-            <button id="stand">Stand</button>
-        </div>
+      <div class="move-me">
+        <p>Player:</p><span id="player-value">0</span>
+        <p>Cash: $<span id="player-currency">10000</span></p>
+        <p>Rounds Won: <span id="player-rounds-won">0</span></p>
+        <label for="bet-amount">Bet Amount: $</label>
+        <input type="text" id="bet-amount" placeholder="Enter bet" >
+        <button id="place-bet">Place Bet</button>
+      </div>
+      <div class="card-player-start"></div>
+      <div class="action-buttons">
+        <button id="hit">Hit</button>
+        <button id="double-down">Double Down</button>
+        <button id="stand">Stand</button>
+      </div>
+      <div class="Music">
+        <input type="checkbox" id="music-all" name="music-all"/>
+        <label for="music-all">Mute Music</label>
+        <audio class="Music" loop>
+          <source src="audios/bg-music.mp3" type="audio/mp3">
+          Your browser does not support the audio element.
+      </audio>
+      
+      </div>
     </div>
+  </div>
 
- </div>
+  <div class="dead-pile">
+    <h2>Dead Pile Cards: <span id="dead-pile-cards">0</span> </h2>
+    
+  </div>
 
+  <script src="script.js"></script>
+ 
 
- <script src="script.js"></script>
-  
 </body>
 
 </html>
