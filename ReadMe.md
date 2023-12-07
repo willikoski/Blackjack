@@ -1,7 +1,9 @@
 Welcome To My JS BlackJack Project
 
 Creator: William Kostreski
+
 LinkedIn: https://www.linkedin.com/in/william-kostreski/
+
 Github: https://github.com/willikoski
 
 In this project, I wanted to see if it was possible of completing the game using the Class method, of making a fully functional game.
