@@ -47,6 +47,39 @@ class BlackjackGame {
         return `${formattedRank}_of_${formattedSuit}.png`;
     }
 
+    calculateHandValue(hand) {
+        let sum = 0;
+        let hasAce = false;
+        let aceCount = 0;
+    
+        for (const card of hand) {
+            if (!card || !card.rank) {
+                console.error("Invalid card object:", card);
+                continue; // Skip caard incase error
+            }
+    
+            if (card.rank === 'A') {
+                hasAce = true;
+                aceCount++;
+            } else if (['K', 'Q', 'J'].includes(card.rank)) {
+                sum += 10;
+            } else {
+                sum += parseInt(card.rank, 10);
+            }
+        }
+    
+        // Ace value 1 or 11
+        for (let i = 0; i < aceCount; i++) {
+            if (sum + 11 <= 21 - (aceCount - 1 - i)) {
+                sum += 11; // Always count it as 11 unless user is gonna bust then use else below
+            } else {
+                sum += 1; // Make the value 1 incase user will bust.
+            }
+        }
+    
+        return sum;
+    }
+
     startGame(deckAmount) { // Start game method will be used to determine how many dekcs were created.
 
     }
@@ -63,9 +96,6 @@ class BlackjackGame {
 
     }
 
-    calculateHandValue() {
-
-    }
 
     displayHouseFirstCard() {
 
