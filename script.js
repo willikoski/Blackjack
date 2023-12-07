@@ -151,16 +151,104 @@ class BlackjackGame {
         this.dealerHand = [this.drawCard(), this.drawCard()];
     }
 
+    placeBet(betAmount) {
+        if (this.gameInProgress) { // is game running?
+            console.error("A game is already in progress. Restart the game to place a new bet.");
+            return;
+        }
+    
+        if (betAmount > 0 && betAmount <= this.playerCurrency) {
+            this.startGame(); // run Start Game method because game is starting
+    
+            // reset state of the game
+            this.currentBet = 0;
+            this.deadPile = [];
+            this.roundsWon = 0;
+            this.gameOver = false;
+            
+            this.currentBet = betAmount; // place and draw card
+            this.playerCurrency -= betAmount;
+            this.playerHand = [this.drawCard(), this.drawCard()];
+            this.dealerHand = [this.drawCard(), this.drawCard()]; //dealer and player draw
+
+            this.displayHands();
+            this.displayHouseFirstCard(); // visualise the hand method
+            this.gameInProgress = true; // game is in progress once bet is placed
+            this.betAmountInput.disabled = true;
+            this.placeBetButton.disabled = true;
+
+            this.updateCardCounter();
+            console.log("Place Bet - Card Counter Updated");
+        } else {
+            console.error("Invalid bet amount or insufficient funds.");
+        }
+    }
+
+    stand() {
+        // Check if a game is in progress
+        if (!this.gameInProgress) {
+            console.error("No game in progress.");
+            return;
+        }
+    
+        // disable the placebet button and hit button
+        this.placeBetButton.disabled = true;
+        document.getElementById("hit").disabled = true;
+    
+        // dealer turn 
+        while (this.calculateHandValue(this.dealerHand) < 17) {
+            const drawnCard = this.drawCard();
+            if (drawnCard && drawnCard.rank && drawnCard.suit) { // Ensure that the drawn card is valid
+                this.dealerHand.push(drawnCard);
+            } else {
+                console.error("Invalid card object:", drawnCard);
+                break;
+            }
+        }
+    
+        // this.displayHands(); // call these two methods once created
+        // this.determineWinner();
+    
+        // Update the game state after the dealer's turn
+        this.gameInProgress = false;
+        this.gameOver = true;
+        this.dealerHiddenCardVisible = true;
+    
+        // enable buttons after 4 seconds
+        let countdown = 4;
+        const countdownInterval = setInterval(() => {
+            this.placeBetButton.textContent = `Cooldown: (${countdown}s)`; // edit text based off seconds on countdown
+            countdown--;
+            if (countdown = 0) {
+                // Enable the stand
+                clearInterval(countdownInterval);
+                this.placeBetButton.textContent = "Place Bet";
+                this.betAmountInput.disabled = false; // Enable the input after the countdown
+                this.placeBetButton.disabled = false;
+                document.getElementById("hit").disabled = false; // enable the hit button
+            }
+        }, 1000);
+    }
+
+    resetHands() {
+
+    }
+
     updateRoundsWon() {
 
     }
 
     updateCardCounter() {
-
-    }
-
-    placeBet(betAmount) {  // gonna call the betAmount so we can place a bet
-
+        console.log("Updating card counter");
+        const cardCounterElement = document.querySelector('.card-counter');
+        if (cardCounterElement) {
+            const remainingCards = this.deck.length;
+            // console.log("Remaining cards in deck:", remainingCards);  
+            // console.log("Deck Amount:", this.deckAmount);
+            cardCounterElement.textContent = `${remainingCards}`;
+        } else {
+            console.error("Element with class 'card-counter' not found.");
+        }
     }
 
     determineWinner() {
@@ -168,14 +256,6 @@ class BlackjackGame {
     }
 
     restartGame() {
-
-    }
-
-    stand() {
-
-    }
-
-    resetHands() {
 
     }
 
@@ -199,3 +279,138 @@ class BlackjackGame {
 
     }
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    game = new BlackjackGame();
+
+    document.getElementById("deck-amount").addEventListener("click", function () {
+        const deckAmountInput = document.getElementById("deck-amount-input");
+        const deckAmount = parseInt(deckAmountInput.value, 10) || 1;
+        this.style.opacity = "0";
+        this.disabled = true;
+        this.style.cursor = "default";
+
+        playAudio('audios/shuffle.mp3', 0.75);
+
+        if (deckAmount > 0) {
+            game.startGame(deckAmount);
+            updateUI();
+            document.getElementById("place-bet").style.display = "inline-block"; // make place button visible
+        } else {
+            alert("Invalid deck amount. Please enter a valid amount.");
+        }
+    });
+
+    function playAudio(audioFile) {
+        const audio = new Audio(audioFile);
+        audio.play();
+    }
+
+    document.getElementById("place-bet").addEventListener("click", () => {
+        const betAmountInput = document.getElementById("bet-amount");
+        const betAmount = parseInt(betAmountInput.value, 10) || 0;
+        game.doubledDown = false;
+        if (betAmount > 0 && betAmount <= game.playerCurrency) {
+            game.placeBet(betAmount);
+            playAudio('audios/card.mp3', .75); // Adjust the volume as needed
+            updateUI();
+        } else {
+            alert("Invalid bet amount. Please enter a valid amount within your available currency.");
+        }
+    });
+
+    document.getElementById("hit").addEventListener("click", function () {
+        if (game.playerHand.length === 0) {
+            alert("Place a bet before hitting.");
+            return;
+        }
+
+        game.hit();
+        playAudio('audios/card.mp3', 0.75); // Adjust the volume as needed
+        updateUI();
+        document.getElementById("double-down").disabled = true; // disabled double down method
+    });
+    
+    function playAudio(audioFile, volume) {
+        const audio = new Audio(audioFile);
+        audio.volume = volume;
+        audio.play();
+    }
+
+
+    document.getElementById("double-down").addEventListener("click", function () {
+
+        if (game.doubledDown) {
+            alert("You can only double down once per round.");
+            return;
+        }
+
+            if (game.playerHand.length === 0) {
+                alert("Place a bet before doubling down.");
+                return;
+            }
+            // Double Down math
+            const originalBet = game.currentBet;
+            const additionalBet = originalBet;
+            const totalBet = originalBet + additionalBet;
+
+            if (totalBet <= game.playerCurrency) { // cash has to be sufficient
+                game.playerCurrency -= additionalBet;
+                game.currentBet = totalBet;
+                game.doubledDown = true;
+                game.playerHand.push(game.drawCard());
+                game.determineWinner();
+                game.stand();
+                updateUI();
+            } else {
+                alert("Insufficient funds to double down.");
+            }
+    });
+
+    document.getElementById("stand").addEventListener("click", function () {
+        if (game.playerHand.length === 0) {
+            alert("Place a bet before standing.");
+            return;
+        }
+        game.stand();
+        updateUI();
+    });
+
+    document.addEventListener("keypress", function (event) {
+        if (event.key === '') {
+            game.playerCurrency += 10000;
+            updateUI();
+        } else if (event.key === 'b') {
+            // Simulate player getting a blackjack
+            game.playerHand = [
+                { suit: 'Hearts', rank: 'A', image: 'a_of_hearts.png' },
+                { suit: 'Hearts', rank: 'K', image: 'k_of_hearts.png' },
+            ];
+            // game.dealerHand = [
+            //     { suit: 'Clubs', rank: '10', image: '10_of_clubs.png' },
+            //     { suit: 'Diamonds', rank: 'Q', image: 'q_of_diamonds.png' }
+            // ];
+    
+            // Update the UI after giving the player a blackjack
+            updateUI();
+        }
+    });
+});
+
+// Bg Music
+function playBackgroundMusic() {
+    let audio = document.querySelector('.Music audio');
+    let checkbox = document.getElementById('music-all');
+    audio.volume = checkbox.checked ? 0 : 0.1; //.1 is 10% audio
+    audio.pause();
+    audio.currentTime = 0;
+    audio.play();
+}
+
+// event listener for music-all
+document.getElementById('music-all').addEventListener('change', playBackgroundMusic);
+
+document.getElementById("deck-amount").addEventListener("click", function() {
+    playBackgroundMusic();
+});
