@@ -16,7 +16,7 @@ class BlackjackGame {
         this.roundsWonHouse = 0;
     }
 
-    createDeck(deckAmount) {   //deckAmount will be used later in order to create multiple decks based off this array
+    createDeck(deckAmount) {   // deckAmount will be used later in order to create multiple decks based off this array
         const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
         const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         const deck = [];
@@ -65,8 +65,8 @@ class BlackjackGame {
                 sum += 10;
             } else {
                 sum += parseInt(card.rank, 10);
-            }
         }
+    }
     
         // Ace value 1 or 11
         for (let i = 0; i < aceCount; i++) {
@@ -107,7 +107,7 @@ class BlackjackGame {
             // Update the card counter directly here
             // this.updateCardCounter(); // gonna call this later for our updateCardCounter method
             updateUI(); // gonna call this later once the method exists
-        }
+    }
 
     drawCard() {
             if (this.deck.length === 0) { 
@@ -119,26 +119,43 @@ class BlackjackGame {
             // this.updateCardCounter(); // Add this line
             console.log("Card drawn:", card); // Add this line
             return card;
+    }
+
+    hit() {
+        if (this.calculateHandValue(this.playerHand) < 21) {
+            this.playerHand.push(this.drawCard());
+            // this.displayHands(); // gonna be called later
+            // this.updateCardCounter();
+            // this.displayHouseFirstCard(); 
+            if (this.calculateHandValue(this.playerHand) > 21) {
+
+                this.restartGame();
+            }
         }
+    }
+
+    displayHouseFirstCard() {
+        const houseFirstCard = document.querySelector('.card-house-start');
+    
+        if (this.dealerHand.length > 0) {
+          const firstCard = this.dealerHand[0];
+          const cardElement = document.createElement("div");
+          cardElement.textContent = `${firstCard.rank} of ${firstCard.suit}`;
+          houseFirstCard.innerHTML = "";
+          houseFirstCard.appendChild(cardElement);
+        }
+    }
+
+    dealInitialHands() {
+        this.playerHand = [this.drawCard(), this.drawCard()];
+        this.dealerHand = [this.drawCard(), this.drawCard()];
+    }
 
     updateRoundsWon() {
 
     }
 
-    dealInitialHands() {
-
-    }
-
-
-    displayHouseFirstCard() {
-
-    }
-
     updateCardCounter() {
-
-    }
-
-    hit() {
 
     }
 
