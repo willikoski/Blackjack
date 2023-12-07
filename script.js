@@ -205,17 +205,13 @@ class BlackjackGame {
                 break;
             }
         }
-    
-        // this.displayHands(); // call these two methods once created
-        // this.determineWinner();
-    
-        // Update the game state after the dealer's turn
-        this.gameInProgress = false;
+
+        this.displayHands(); 
+        this.determineWinner();
+        this.gameInProgress = false; // Update the game state after the dealer's turn
         this.gameOver = true;
         this.dealerHiddenCardVisible = true;
-    
-        // enable buttons after 4 seconds
-        let countdown = 4;
+        let countdown = 4; // enable buttons after 4 seconds
         const countdownInterval = setInterval(() => {
             this.placeBetButton.textContent = `Cooldown: (${countdown}s)`; // edit text based off seconds on countdown
             countdown--;
@@ -230,9 +226,47 @@ class BlackjackGame {
         }, 1000);
     }
 
-    resetHands() {
-
+    displayHands() {
+        this.displayPlayerHand();
+        this.displayDealerHand();
     }
+
+    displayPlayerHand() {
+        updateCardUI(this.playerHand, "card-player-start");
+    }
+
+    displayDealerHand() {
+      const container = document.querySelector(".card-house-start");
+      container.innerHTML = "";
+  
+      for (let i = 0; i < this.dealerHand.length; i++) {
+          const card = this.dealerHand[i];
+          const cardContainer = document.createElement("div");
+  
+          const cardImage = document.createElement("img");
+          cardImage.src = i === 0 && !this.dealerHiddenCardVisible ? 'images/back_card.png' : `images/${card.image}`;
+  
+          const cardText = document.createElement("div");
+          cardText.textContent = i === 0 && !this.dealerHiddenCardVisible ? "Hidden" : `${card.rank} of ${card.suit}`;
+          cardImage.style.width = "155px";
+          cardImage.style.height = "auto"; 
+          cardContainer.appendChild(cardImage);
+          cardContainer.appendChild(cardText);
+          container.appendChild(cardContainer);
+      }
+      // Display the total value for the visible cards
+      const visibleCards = this.dealerHiddenCardVisible ? this.dealerHand : this.dealerHand.slice(1);
+      const houseValue = this.calculateHandValue(visibleCards);
+      document.getElementById("house-value").textContent = houseValue;
+  }
+
+  resetHands() {
+    this.playerHand = [];
+    this.dealerHand = [];
+  
+    // update UI for hands
+    this.displayHands();
+  }
 
     updateRoundsWon() {
 
@@ -259,17 +293,7 @@ class BlackjackGame {
 
     }
 
-    displayHands() {
-
-    }
-
-    displayPlayerHand() {
-
-    }
-
-    displayDealerHand() {
-
-    }
+    
 
     displayDeadPileCount() {
 
@@ -278,6 +302,45 @@ class BlackjackGame {
     formatHand(hand) {
 
     }
+}
+
+
+
+
+
+// Global Functions
+
+function updateCardUI(hand, containerId) {
+    const container = document.querySelector(`.${containerId}`);
+    container.innerHTML = "";
+
+    if (Array.isArray(hand)) {
+        for (const card of hand) {
+            const cardContainer = document.createElement("div");
+            cardContainer.classList.add("card-container"); 
+
+            const cardImage = document.createElement("img");
+            cardImage.src = card.image === "back_card.png" ? "images/back_card.png" : `images/${card.image}`;
+            cardImage.style.width = "155px";
+            cardImage.style.height = "auto"; 
+            const cardText = document.createElement("div");
+            cardText.textContent = `${card.rank} of ${card.suit}`;
+
+            cardContainer.appendChild(cardImage);
+            cardContainer.appendChild(cardText);
+            container.appendChild(cardContainer);
+        }
+    }
+}
+
+function updateUI() {
+    document.getElementById("house-value").textContent = game.calculateHandValue(game.dealerHand);
+    document.getElementById("player-value").textContent = game.calculateHandValue(game.playerHand);
+    document.getElementById("player-currency").textContent = `${game.playerCurrency.toFixed(2)}`;
+
+    game.displayHands();
+    game.updateRoundsWon("house-rounds-won", game.roundsWonHouse);
+    game.updateRoundsWon("player-rounds-won", game.roundsWonPlayer);
 }
 
 
