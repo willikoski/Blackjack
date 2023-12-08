@@ -28,6 +28,7 @@ Force Reshuffle once the deck hits 0 cards left
 
 -------------**All Methods used in the JS In Order** -----------------
 **Constructor:**
+
 constructor
 Deck Management:
 createDeck
