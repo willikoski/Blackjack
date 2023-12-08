@@ -1,22 +1,25 @@
 class BlackjackGame {
     constructor() {
-        this.deck = [];
-        this.playerHand = [];
-        this.dealerHand = [];
-        this.currentBet = 0;
-        this.playerCurrency = 10000;
-        this.roundsWon = 0;
-        this.gameInProgress = false;
-        this.gameOver = true;
-        this.dealerHiddenCardVisible = false;
-        this.totalDecks = 1;
-        this.betAmountInput = document.getElementById('bet-amount');
-        this.placeBetButton = document.getElementById('place-bet');
-        this.roundsWonPlayer = 0;
-        this.roundsWonHouse = 0;
+      this.deck = this.createDeck();
+      this.playerHand = [];
+      this.dealerHand = [];
+      this.currentBet = 0;
+      this.playerCurrency = 10000;
+      this.roundsWon = 0;
+      this.gameInProgress = false;
+      this.gameOver = true;
+      this.dealerHiddenCardVisible = false;
+      this.totalDecks = 1; // Set a default value for the total number of decks
+  
+      // UI elements
+      this.betAmountInput = document.getElementById('bet-amount');
+      this.placeBetButton = document.getElementById('place-bet');
+      this.roundsWonPlayer = 0;
+      this.roundsWonHouse = 0;
     }
 
-    createDeck(deckAmount) {   // deckAmount will be used later in order to create multiple decks based off this array
+    // Deck Creation And shuffle//
+    createDeck(deckAmount) {  
         const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
         const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         const deck = [];
@@ -41,23 +44,25 @@ class BlackjackGame {
         return deck;
     }
 
-    getCardImageFileName(rank, suit) {  //gonna pull the images based off its name in the images folder.
+    getCardImageFileName(rank, suit) {
         const formattedRank = rank.toLowerCase();
         const formattedSuit = suit.toLowerCase();
-        return `${formattedRank}_of_${formattedSuit}.png`;
+    return `${formattedRank}_of_${formattedSuit}.png`;
     }
+    // Deck Creation And shuffle//
 
+    //Hand Calculation//
     calculateHandValue(hand) {
         let sum = 0;
         let hasAce = false;
         let aceCount = 0;
-    
+        
         for (const card of hand) {
             if (!card || !card.rank) {
                 console.error("Invalid card object:", card);
-                continue; // Skip caard incase error
+                continue; // Skip this card and move to the next one
             }
-    
+        
             if (card.rank === 'A') {
                 hasAce = true;
                 aceCount++;
@@ -65,77 +70,316 @@ class BlackjackGame {
                 sum += 10;
             } else {
                 sum += parseInt(card.rank, 10);
+            }
         }
-    }
-    
-        // Ace value 1 or 11
+        
+        // Add the value of Aces (11 or 1) to the sum
         for (let i = 0; i < aceCount; i++) {
             if (sum + 11 <= 21 - (aceCount - 1 - i)) {
-                sum += 11; // Always count it as 11 unless user is gonna bust then use else below
+                sum += 11; // Count Ace as 11
             } else {
-                sum += 1; // Make the value 1 incase user will bust.
+                sum += 1; // Count Ace as 1 to prevent bust
             }
         }
-    
+        
         return sum;
     }
+    //Hand Calculation//
 
-    startGame(deckAmount) { // Start game method will be used to determine how many dekcs were created.
-            // Check if a game is already in progress
-            if (this.gameInProgress) {
-                console.error("A game is already in progress.");
-                return;
-            }
-        
-            game = this;
-            // create a deck if it doesnt exist
-            if (!this.deck || this.deck.length === 0) {
-                this.deck = this.createDeck(deckAmount);  // Pass deckAmount here
-                this.deck = this.shuffleDeck([...this.deck]); // this.deck might be more then one, and at startgame we are running shuffleDeck.
-            }
-        
-            // this.deckAmount = deckAmount;
-            this.playerHand = [];
-            this.dealerHand = [];
-            this.currentBet = 0;
-            this.deadPile = [];
-            this.roundsWon = 0;
-            this.gameOver = false; // Reset gameOver to false
-            this.dealerHiddenCardVisible = false; // Reset the flag
-        
-        
-            // Update the card counter directly here
-            // this.updateCardCounter(); // gonna call this later for our updateCardCounter method
-            updateUI(); // gonna call this later once the method exists
+    //Game Start and Car deal//
+    startGame(deckAmount) {
+        // Check if a game is already in progress
+        if (this.gameInProgress) {
+            console.error("A game is already in progress.");
+            return;
+        }
+    
+        game = this;
+    
+        // Only create a new deck if it never exists //
+        if (!this.deck || this.deck.length === 0) {
+            this.deck = this.createDeck(deckAmount);  // Pass deckAmount here
+            this.deck = this.shuffleDeck([...this.deck]);
+        }
+    
+        this.deckAmount = deckAmount;
+        this.playerHand = [];
+        this.dealerHand = [];
+        this.currentBet = 0;
+        this.deadPile = [];
+        this.roundsWon = 0;
+        this.gameOver = false; 
+        this.dealerHiddenCardVisible = false; 
+
+        this.updateCardCounter();
+        updateUI();
     }
 
-    drawCard() {
-            if (this.deck.length === 0) { 
-                this.deck = this.shuffleDeck([...this.deadPile]); // shuffleDeck  at 0 deck length.
-            }
-        
-            const card = this.deck.pop(); // pop a card from the deck array
-            // this.deadPile.push(card); // for the deadPile method we are gonna push a card for the counter then later call the updateCardCounter
-            // this.updateCardCounter(); // Add this line
-            console.log("Card drawn:", card); // Add this line
-            return card;
+    dealInitialHands() {
+        this.playerHand = [this.drawCard(), this.drawCard()];
+        this.dealerHand = [this.drawCard(), this.drawCard()];
     }
+    //Game Start and Car deal//
 
-    formatHand(hand) {
-        return hand.map(card => `${card.rank} of ${card.suit}`).join(', ');
-      }
-    }
-
+    //Player Actions//
     hit() {
         if (this.calculateHandValue(this.playerHand) < 21) {
             this.playerHand.push(this.drawCard());
-            // this.displayHands(); // gonna be called later
-            // this.updateCardCounter();
-            // this.displayHouseFirstCard(); 
+            this.displayHands();
+            this.updateCardCounter();
+            this.displayHouseFirstCard(); 
             if (this.calculateHandValue(this.playerHand) > 21) {
 
                 this.restartGame();
             }
+        }
+    }
+
+    stand() {
+        // Check if a game is in progress
+        if (!this.gameInProgress) {
+            console.error("No game in progress.");
+            return;
+        }
+    
+        // Disable the stand and hit
+        this.placeBetButton.disabled = true;
+        document.getElementById("hit").disabled = true;
+
+        while (this.calculateHandValue(this.dealerHand) < 17) {
+            const drawnCard = this.drawCard();
+            if (drawnCard && drawnCard.rank && drawnCard.suit) {
+                this.dealerHand.push(drawnCard);
+            } else {
+                console.error("Invalid card object:", drawnCard);
+                break;
+            }
+        }
+    
+        // Display both the player's and dealer's hands
+        this.displayHands();
+    
+        // Determine the winner
+        this.determineWinner();
+    
+        // Update the game state after the dealer's turn
+        this.gameInProgress = false;
+        this.gameOver = true;
+        this.dealerHiddenCardVisible = true;
+    
+        // Enable the "Stand" button and "Hit" button after the next bet
+        let countdown = 2;
+        const countdownInterval = setInterval(() => {
+            // Update the button text with the countdown
+            this.placeBetButton.textContent = `Cooldown: (${countdown}s)`;
+    
+            // Decrease the countdown
+            countdown--;
+    
+            if (countdown < 0) {
+                // Enable the "Stand" button after the countdown
+                clearInterval(countdownInterval);
+                this.placeBetButton.textContent = "Place Bet";
+                this.betAmountInput.disabled = false; // Enable the input after the countdown
+                this.placeBetButton.disabled = false;
+                // Enable the "Hit" button
+                document.getElementById("hit").disabled = false;
+            }
+        }, 1000);
+    }
+
+    placeBet(betAmount) {
+        // Check if a game is already in progress
+        if (this.gameInProgress) {
+            console.error("A game is already in progress. Restart the game to place a new bet.");
+            return;
+        }
+    
+        if (betAmount > 0 && betAmount <= this.playerCurrency) {
+            this.startGame();
+            // Reset game state before placing a new bet
+            this.currentBet = 0;
+            this.deadPile = [];
+            this.roundsWon = 0;
+            this.gameOver = false;
+            this.currentBet = betAmount;
+            this.playerCurrency -= betAmount;
+
+            this.playerHand = [this.drawCard(), this.drawCard()];
+            this.dealerHand = [this.drawCard(), this.drawCard()]; // Two cards drawn 
+    
+            // Display the hands
+            this.displayHands();
+            this.displayHouseFirstCard();
+    
+            // Update the game state to indicate that a game is in progress
+            this.gameInProgress = true;
+            this.betAmountInput.disabled = true;
+            this.placeBetButton.disabled = true;
+    
+            // Update the card counter
+            this.updateCardCounter();
+            console.log("Place Bet - Card Counter Updated"); // Add this line
+        } else {
+            console.error("Invalid bet amount or insufficient funds.");
+        }
+    }
+    //Player Actions//
+
+    
+    drawCard() {
+        if (this.deck.length === 0) {
+            this.deck = this.shuffleDeck([...this.deadPile]);
+            // Do not clear the dead pile here
+        }
+        const card = this.deck.pop();
+        this.deadPile.push(card);
+        this.updateCardCounter(); // Add this line
+        console.log("Card drawn:", card); // Add this line
+        return card;
+    }
+
+    
+    updateCardCounter() {
+        console.log("Updating card counter");
+        const cardCounterElement = document.querySelector('.card-counter');
+        if (cardCounterElement) {
+            const remainingCards = this.deck.length;
+            // console.log("Remaining cards in deck:", remainingCards);  
+            // console.log("Deck Amount:", this.deckAmount);
+            cardCounterElement.textContent = `${remainingCards}`;
+        } else {
+            console.error("Element with class 'card-counter' not found.");
+        }
+    }
+    // Card Handling //
+
+    //Game Rule Logic//
+
+    determineWinner() {
+        // Check if the game is already over
+        if (this.gameOver) {
+            console.error("The game is already over.");
+            return;
+        }
+    
+        // Declare dealerValue at the beginning / But playerValue will always show
+        let dealerValue = this.calculateHandValue(this.dealerHand);
+        const playerValue = this.calculateHandValue(this.playerHand);
+    
+        // Check for dealer blackjack
+        if (this.dealerHand.length === 2 && dealerValue === 21) {
+            this.displayDealerHand();
+    
+            console.log("House blackjack! Player loses.");
+            this.gameOver = true;
+            this.roundsWon--; 
+            this.updateRoundsWon("house-rounds-won");
+            this.displayDeadPileCount(); 
+        }
+    
+        // Check if the dealer busts
+        if (dealerValue > 21) {
+            // Dealer busts we will show the cards //
+            const winnings = this.currentBet * 2;
+            this.displayDealerHand(); 
+            
+            console.log(`Dealer busts! You win ${winnings}!`);
+            this.roundsWonPlayer++; 
+            this.playerCurrency += winnings;
+            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer); 
+            this.displayDeadPileCount(); 
+            this.gameOver = true;
+        }
+    
+        // Check for a push condition
+        if (playerValue === dealerValue) {
+            this.displayDealerHand(); // we will show the dealers hand because its a push
+            console.log("Push. Bet returned.");
+            this.playerCurrency += this.currentBet; // push counts as a returned bet
+            this.displayDeadPileCount(); 
+            this.gameOver = true;
+        }
+        // Logic for wins and losses //
+        if (playerValue > 21 || (dealerValue <= 21 && dealerValue >= playerValue)) {
+            // Player loses
+            console.log("You lose.");
+            this.roundsWonHouse++; // Increment rounds won for the house
+            this.updateRoundsWon("house-rounds-won", this.roundsWonHouse); // Update rounds won for the house
+            this.displayDeadPileCount(); 
+        } else if (playerValue === 21 && this.playerHand.length === 2 && !(dealerValue === 21 && this.dealerHand.length === 2)) {
+            const winnings = this.currentBet * 2.5; // blackjack pays out 2.5 of initial bet
+            this.roundsWonPlayer++; 
+            this.playerCurrency += winnings;
+            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer); 
+            this.displayDeadPileCount(); 
+            console.log(`Blackjack! You win ${winnings}!`);
+        } else {
+            // Player wins
+            const winnings = this.currentBet * 2;
+            this.roundsWonPlayer++; 
+            this.playerCurrency += winnings;
+            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer); 
+            this.displayDeadPileCount(); 
+            console.log(`You win ${winnings}!`);
+        }
+        this.roundsWonHouse++; // dealer wins we had a round to its html element
+        this.gameOver = true;
+        this.displayDealerHand(); // Makes all cards and value visible
+
+    }
+    //Game Rule Logic//
+
+    //All User Interface stuff UI//
+    displayHands() {
+        this.displayPlayerHand();
+        this.displayDealerHand();
+    }
+
+    displayPlayerHand() {
+        updateCardUI(this.playerHand, "card-player-start");
+    }
+
+    displayDealerHand() {
+        const container = document.querySelector(".card-house-start");
+        container.innerHTML = "";
+    
+        for (let i = 0; i < this.dealerHand.length; i++) {
+            const card = this.dealerHand[i];
+            const cardContainer = document.createElement("div");
+    
+            const cardImage = document.createElement("img");
+            cardImage.src = i === 0 && !this.dealerHiddenCardVisible ? 'images/back_card.png' : `images/${card.image}`;
+    
+            const cardText = document.createElement("div");
+            cardText.textContent = i === 0 && !this.dealerHiddenCardVisible ? "Hidden" : `${card.rank} of ${card.suit}`;
+            cardImage.style.width = "155px";
+            cardImage.style.height = "auto"; 
+    
+            cardContainer.appendChild(cardImage);
+            cardContainer.appendChild(cardText);
+            container.appendChild(cardContainer);
+        }
+    
+        // Display the total value for the visible cards
+        const visibleCards = this.dealerHiddenCardVisible ? this.dealerHand : this.dealerHand.slice(1);
+        const houseValue = this.calculateHandValue(visibleCards);
+        document.getElementById("house-value").textContent = houseValue;
+    }
+
+    displayDeadPileCount() {
+        const deadPileCount = document.getElementById('dead-pile-cards');
+    
+        if (deadPileCount) {
+            const uniqueCards = [...new Set(this.deadPile.map(card => card.rank + card.suit))];
+            const currentCount = parseInt(deadPileCount.textContent, 10) || 0;
+            const newCount = currentCount + uniqueCards.length;
+    
+            deadPileCount.textContent = newCount; // adding to the value for the counter
+            console.log("Updated dead pile count:", newCount);
+            this.updateCardCounter(); 
+        } else {
+            console.error("Element with ID 'dead-pile-cards' not found.");
         }
     }
 
@@ -150,169 +394,57 @@ class BlackjackGame {
           houseFirstCard.appendChild(cardElement);
         }
     }
+    //All User Interface stuff UI//
 
-    dealInitialHands() {
-        this.playerHand = [this.drawCard(), this.drawCard()];
-        this.dealerHand = [this.drawCard(), this.drawCard()];
-    }
-
-    placeBet(betAmount) {
-        if (this.gameInProgress) { // is game running?
-            console.error("A game is already in progress. Restart the game to place a new bet.");
-            return;
-        }
-    
-        if (betAmount > 0 && betAmount <= this.playerCurrency) {
-            this.startGame(); // run Start Game method because game is starting
-    
-            // reset state of the game
-            this.currentBet = 0;
-            this.deadPile = [];
-            this.roundsWon = 0;
-            this.gameOver = false;
-            
-            this.currentBet = betAmount; // place and draw card
-            this.playerCurrency -= betAmount;
-            this.playerHand = [this.drawCard(), this.drawCard()];
-            this.dealerHand = [this.drawCard(), this.drawCard()]; //dealer and player draw
-
-            this.displayHands();
-            this.displayHouseFirstCard(); // visualise the hand method
-            this.gameInProgress = true; // game is in progress once bet is placed
-            this.betAmountInput.disabled = true;
-            this.placeBetButton.disabled = true;
-
-            this.updateCardCounter();
-            console.log("Place Bet - Card Counter Updated");
-        } else {
-            console.error("Invalid bet amount or insufficient funds.");
-        }
-    }
-
-    stand() {
-        // Check if a game is in progress
-        if (!this.gameInProgress) {
-            console.error("No game in progress.");
-            return;
-        }
-    
-        // disable the placebet button and hit button
-        this.placeBetButton.disabled = true;
-        document.getElementById("hit").disabled = true;
-    
-        // dealer turn 
-        while (this.calculateHandValue(this.dealerHand) < 17) {
-            const drawnCard = this.drawCard();
-            if (drawnCard && drawnCard.rank && drawnCard.suit) { // Ensure that the drawn card is valid
-                this.dealerHand.push(drawnCard);
-            } else {
-                console.error("Invalid card object:", drawnCard);
-                break;
-            }
-        }
-
-        this.displayHands(); 
-        this.determineWinner();
-        this.gameInProgress = false; // Update the game state after the dealer's turn
-        this.gameOver = true;
-        this.dealerHiddenCardVisible = true;
-        let countdown = 4; // enable buttons after 4 seconds
-        const countdownInterval = setInterval(() => {
-            this.placeBetButton.textContent = `Cooldown: (${countdown}s)`; // edit text based off seconds on countdown
-            countdown--;
-            if (countdown = 0) {
-                // Enable the stand
-                clearInterval(countdownInterval);
-                this.placeBetButton.textContent = "Place Bet";
-                this.betAmountInput.disabled = false; // Enable the input after the countdown
-                this.placeBetButton.disabled = false;
-                document.getElementById("hit").disabled = false; // enable the hit button
-            }
-        }, 1000);
-    }
-
-    displayHands() {
-        this.displayPlayerHand();
-        this.displayDealerHand();
-    }
-
-    displayPlayerHand() {
-        updateCardUI(this.playerHand, "card-player-start");
-    }
-
-    displayDealerHand() {
-      const container = document.querySelector(".card-house-start");
-      container.innerHTML = "";
-  
-        for (let i = 0; i < this.dealerHand.length; i++) {
-          const card = this.dealerHand[i];
-          const cardContainer = document.createElement("div");
-  
-          const cardImage = document.createElement("img");
-          cardImage.src = i === 0 && !this.dealerHiddenCardVisible ? 'images/back_card.png' : `images/${card.image}`;
-  
-          const cardText = document.createElement("div");
-          cardText.textContent = i === 0 && !this.dealerHiddenCardVisible ? "Hidden" : `${card.rank} of ${card.suit}`;
-          cardImage.style.width = "155px";
-          cardImage.style.height = "auto"; 
-          cardContainer.appendChild(cardImage);
-          cardContainer.appendChild(cardText);
-          container.appendChild(cardContainer);
-        }
-      // Display the total value for the visible cards
-      const visibleCards = this.dealerHiddenCardVisible ? this.dealerHand : this.dealerHand.slice(1);
-      const houseValue = this.calculateHandValue(visibleCards);
-      document.getElementById("house-value").textContent = houseValue;
-    }
-
-    resetHands() {
-        this.playerHand = [];
-        this.dealerHand = [];
-  
-         // update UI for hands
-        this.displayHands();
-    }
-
-    updateRoundsWon() {
-
-    }
-
-    updateCardCounter() {
-        console.log("Updating card counter");
-        const cardCounterElement = document.querySelector('.card-counter');
-        if (cardCounterElement) {
-            const remainingCards = this.deck.length;
-            // console.log("Remaining cards in deck:", remainingCards);  
-            // console.log("Deck Amount:", this.deckAmount);
-            cardCounterElement.textContent = `${remainingCards}`;
-        } else {
-            console.error("Element with class 'card-counter' not found.");
-        }
-    }
-
-    determineWinner() {
-
-    }
+    //Game Restart Logic//
 
     restartGame() {
         this.gameInProgress = false;
         this.betAmountInput.disabled = false;
         this.placeBetButton.disabled = false;
+    }
+
+    resetHands() {
+        // Reset player and dealer hands
+        this.playerHand = [];
+        this.dealerHand = [];
+      
+        // Update UI without resetting the game state
+        this.displayHands();
       }
 
-    displayDeadPileCount() {
+    //Game Restart Logic//
 
+    //Round Updater//
+
+    updateRoundsWon(elementId, roundsWon) {
+        const roundsWonElement = document.getElementById(elementId);
+        if (roundsWonElement) {
+            roundsWonElement.textContent = roundsWon;
+        } else {
+            console.error(`Element with ID ${elementId} not found.`);
+        }
     }
-// Global Functions
 
-function updateCardUI(hand, containerId) {
+    //Round Updater//
+
+    // Formatting //
+    formatHand(hand) {
+        return hand.map(card => `${card.rank} of ${card.suit}`).join(', ');
+      }
+    }
+    // Formatting //
+
+
+    // UI Functions //
+  function updateCardUI(hand, containerId) {
     const container = document.querySelector(`.${containerId}`);
     container.innerHTML = "";
 
     if (Array.isArray(hand)) {
         for (const card of hand) {
             const cardContainer = document.createElement("div");
-            cardContainer.classList.add("card-container"); 
+            cardContainer.classList.add("card-container");
 
             const cardImage = document.createElement("img");
             cardImage.src = card.image === "back_card.png" ? "images/back_card.png" : `images/${card.image}`;
@@ -338,6 +470,9 @@ function updateUI() {
     game.updateRoundsWon("player-rounds-won", game.roundsWonPlayer);
 }
 
+// UI Functions //
+
+// All DOM //
 
 document.addEventListener("DOMContentLoaded", function () {
     game = new BlackjackGame();
@@ -354,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (deckAmount > 0) {
             game.startGame(deckAmount);
             updateUI();
-            document.getElementById("place-bet").style.display = "inline-block"; // make place button visible
+            document.getElementById("place-bet").style.display = "inline-block"; // inline wont break the style
         } else {
             alert("Invalid deck amount. Please enter a valid amount.");
         }
@@ -371,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
         game.doubledDown = false;
         if (betAmount > 0 && betAmount <= game.playerCurrency) {
             game.placeBet(betAmount);
-            playAudio('audios/card.mp3', .75); // Adjust the volume as needed
+            playAudio('audios/card.mp3', .75); 
             updateUI();
         } else {
             alert("Invalid bet amount. Please enter a valid amount within your available currency.");
@@ -383,11 +518,13 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Place a bet before hitting.");
             return;
         }
-
+    
         game.hit();
-        playAudio('audios/card.mp3', 0.75); // Adjust the volume as needed
+        playAudio('audios/card.mp3', 0.75); 
         updateUI();
-        document.getElementById("double-down").disabled = true; // disabled double down method
+    
+        // Disable the Double after Hit button
+        document.getElementById("double-down").disabled = true;
     });
     
     function playAudio(audioFile, volume) {
@@ -398,32 +535,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     document.getElementById("double-down").addEventListener("click", function () {
-
         if (game.doubledDown) {
             alert("You can only double down once per round.");
             return;
         }
+    
+        if (game.playerHand.length === 0) {
+            alert("Place a bet before doubling down.");
+            return;
+        }
+    
+        // Double down logic
+        const originalBet = game.currentBet;
+        const additionalBet = originalBet;
+        const totalBet = originalBet + additionalBet;
+    
+        if (totalBet <= game.playerCurrency) {
+            game.playerCurrency -= additionalBet;
+            game.currentBet = totalBet;
+            game.doubledDown = true;
+            game.playerHand.push(game.drawCard());
+            game.determineWinner();
+            game.stand();
 
-            if (game.playerHand.length === 0) {
-                alert("Place a bet before doubling down.");
-                return;
-            }
-            // Double Down math
-            const originalBet = game.currentBet;
-            const additionalBet = originalBet;
-            const totalBet = originalBet + additionalBet;
-
-            if (totalBet <= game.playerCurrency) { // cash has to be sufficient
-                game.playerCurrency -= additionalBet;
-                game.currentBet = totalBet;
-                game.doubledDown = true;
-                game.playerHand.push(game.drawCard());
-                game.determineWinner();
-                game.stand();
-                updateUI();
-            } else {
-                alert("Insufficient funds to double down.");
-            }
+            updateUI();
+        } else {
+            alert("Insufficient funds to double down.");
+        }
     });
 
     document.getElementById("stand").addEventListener("click", function () {
@@ -472,3 +610,5 @@ document.getElementById('music-all').addEventListener('change', playBackgroundMu
 document.getElementById("deck-amount").addEventListener("click", function() {
     playBackgroundMusic();
 });
+
+// All DOM //
