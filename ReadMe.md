@@ -32,11 +32,8 @@ Force Reshuffle once the deck hits 0 cards left
 constructor
 
 Deck Management:
-
-createDeck
-
-shuffleDeck
-
+  createDeck
+  shuffleDeck
 Game Initialization:
 
 startGame
