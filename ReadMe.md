@@ -28,46 +28,46 @@ Force Reshuffle once the deck hits 0 cards left
 
 -------------**All Methods used in the JS In Order** -----------------
 **Constructor:**
-- constructor
+	constructor
 **Deck Management:**
-- createDeck
-- shuffleDeck
+	createDeck
+	shuffleDeck
 **Game Initialization:**
-- startGame
-- dealInitialHands
+  startGame
+  dealInitialHands
 **Player Actions:**
-- hit
-- stand
-- placeBet 
+  hit
+  stand
+  placeBet 
 **Card Handling:**
--   drawCard
--   updateCardCounter
+  drawCard
+  updateCardCounter
 **Hand Calculation:**
--   calculateHandValue
+  calculateHandValue
 **Winning Logic:**
   determineWinner
 **UI Display:**
--   displayHands
--   displayPlayerHand
--   displayDealerHand
--   displayDeadPileCount
+  displayHands
+  displayPlayerHand
+  displayDealerHand
+  displayDeadPileCount
 **Game State Management:**
--   restartGame
--   resetHands
--   Round Statistics:
--   updateRoundsWon
+  restartGame
+  resetHands
+  Round Statistics:
+  updateRoundsWon
 **UI Update:**
--   updateUI
--   updateCardUI
+  updateUI
+  updateCardUI
 **Audio Handling:**
--   playAudio
--   playBackgroundMusic
+  playAudio
+  playBackgroundMusic
 -------------**All Methods used in the JS In Order** -----------------
 
-**Structure** was created first, with a Main Class, and an array system where images and values are created with images pulled based off image name.
+Structure was created first, with a Main Class, and an array system where images and values are created with images pulled based off image name.
 
-**Future Updates:** Better visuals / And a split function. 
+Future Updates: Better visuals / And a split function. 
 
-**Disclaimer, all images, sounds, music are royalty free.**
+Disclaimer, all images, sounds, music are royalty free.
 
-**I will not be re creating this proejct using a different system then Class.**
+I will not be re creating this proejct using a different system then Class.
