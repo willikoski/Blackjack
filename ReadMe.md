@@ -12,6 +12,7 @@ In this project, I wanted to see if it was possible of completing the game using
 
 Logic - I wanted to create a blackjack game where users can try counting cards. Most casinos use more then 4 decks to avoid or minimize card counters so they maintain the house edge.     
 
+
 Functionality - Users will be allowed to choose how many decks they'd like the game to have.                                                                                               
 
 Functionality 2. - Cards left, and deadpile of cards will be tracked live time after every hand, so users may try tracking what the dealer has.                                            
@@ -25,10 +26,45 @@ Cheat codes to keep your balance up, on keypress "v" the user will add 10,000 cu
 Force Reshuffle once the deck hits 0 cards left                                                                                                                                            
 --------------------------------
 
+-------------All Methods used in the JS In Order -----------------
+Constructor:
+constructor
+Deck Management:
+  createDeck
+  shuffleDeck
+Game Initialization:
+  startGame
+  dealInitialHands
+Player Actions:
+  hit
+  stand
+  placeBet 
+Card Handling:
+  drawCard
+  updateCardCounter
+Hand Calculation:
+  calculateHandValue
+Winning Logic:
+  determineWinner
+UI Display:
+  displayHands
+  displayPlayerHand
+  displayDealerHand
+  displayDeadPileCount
+Game State Management:
+  restartGame
+  resetHands
+  Round Statistics:
+  updateRoundsWon
+UI Update:
+  updateUI
+  updateCardUI
+Audio Handling:
+  playAudio
+  playBackgroundMusic
+-------------All Methods used in the JS In Order -----------------
+
 Structure was created first, with a Main Class, and an array system where images and values are created with images pulled based off image name.
-
-
-
 
 Future Updates: Better visuals / And a split function. 
 
