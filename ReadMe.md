@@ -27,8 +27,7 @@ Force Reshuffle once the deck hits 0 cards left
 --------------------------------
 
 -------------**All Methods used in the JS In Order** -----------------
-Constructor:
-```
+**Constructor:**
 constructor
 Deck Management:
 createDeck
@@ -63,7 +62,7 @@ updateCardUI
 Audio Handling:
 playAudio
 playBackgroundMusic
-```
+
 -------------**All Methods used in the JS In Order** -----------------
 
 Structure was created first, with a Main Class, and an array system where images and values are created with images pulled based off image name.
