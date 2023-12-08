@@ -29,41 +29,40 @@ Force Reshuffle once the deck hits 0 cards left
 -------------**All Methods used in the JS In Order** -----------------
 
 ##### **Constructor:**
-constructor
+- constructor
 ##### **Deck Management:**
-createDeck
-shuffleDeck
+- createDeck
+- shuffleDeck
 ##### **Game Initialization:**
-startGame
-dealInitialHands
+- startGame
+- dealInitialHands
 ##### **Player Actions:**
-hit
-stand
-placeBet 
+- hit
+- stand
+- placeBet 
 ##### **Card Handling:**
-drawCard
-updateCardCounter
+- drawCard
+- updateCardCounter
 ##### **Hand Calculation:**
-calculateHandValue
+- calculateHandValue
 ##### **Winning Logic:**
-determineWinner
+- determineWinner
 ##### **UI Display:**
-displayHands
-displayPlayerHand
-displayDealerHand
-displayDeadPileCount
+- displayHands
+- displayPlayerHand
+- displayDealerHand
+- displayDeadPileCount
 ##### **Game State Management:**
-restartGame
-resetHands
+- restartGame
+- resetHands
 ##### **Round Statistics:**
-updateRoundsWon
+- updateRoundsWon
 ##### **UI Update:**
-updateUI
-updateCardUI
+- updateUI
+- updateCardUI
 ##### **Audio Handling:**
-playAudio
-playBackgroundMusic
-
+- playAudio
+- playBackgroundMusic
 
 -------------**All Methods used in the JS In Order** -----------------
 
