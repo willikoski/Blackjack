@@ -16,7 +16,7 @@
 
 - **House Rules if the card value is 17 or higher, house will stand.**
 
-- ![Image]([/assets/images/readme.jpg))
+- ![Image](https://willikoski.github.io/Blackjack/images/readme.jpg)
 
 ----------**Functionality of the game**------------
 
