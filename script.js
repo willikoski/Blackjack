@@ -123,14 +123,24 @@ class BlackjackGame {
 
     //Player Actions//
     hit() {
-        if (this.calculateHandValue(this.playerHand) < 21) {
+        const playerHandValue = this.calculateHandValue(this.playerHand);
+        console.log("Player hand value before hit:", playerHandValue);
+    
+        if (playerHandValue < 21) {
             this.playerHand.push(this.drawCard());
             this.displayHands();
             this.updateCardCounter();
-            this.displayHouseFirstCard(); 
-            if (this.calculateHandValue(this.playerHand) > 21) {
-
+            this.displayHouseFirstCard();
+    
+            const updatedHandValue = this.calculateHandValue(this.playerHand);
+            console.log("Player hand value after hit:", updatedHandValue);
+    
+            if (updatedHandValue > 21) {
+                console.log("Player busts. Restarting the game.");
+                this.updateRoundsWon("house-rounds-won", this.roundsWonHouse); // Update rounds won for the house
+                this.displayDeadPileCount();
                 this.restartGame();
+                this.gameOver = true;
             }
         }
     }
@@ -158,8 +168,6 @@ class BlackjackGame {
     
         // Display both the player's and dealer's hands
         this.displayHands();
-    
-        // Determine the winner
         this.determineWinner();
     
         // Update the game state after the dealer's turn
@@ -270,63 +278,68 @@ class BlackjackGame {
         // Check for dealer blackjack
         if (this.dealerHand.length === 2 && dealerValue === 21) {
             this.displayDealerHand();
-    
             console.log("House blackjack! Player loses.");
+            this.roundsWonHouse++;
+            this.updateRoundsWon("house-rounds-won", this.roundsWonHouse);
+            this.displayDeadPileCount();
             this.gameOver = true;
-            this.roundsWon--; 
-            this.updateRoundsWon("house-rounds-won");
-            this.displayDeadPileCount(); 
+            return; // Exit the function early
         }
     
         // Check if the dealer busts
         if (dealerValue > 21) {
             // Dealer busts we will show the cards //
             const winnings = this.currentBet * 2;
-            this.displayDealerHand(); 
-            
+            this.displayDealerHand();
             console.log(`Dealer busts! You win ${winnings}!`);
-            this.roundsWonPlayer++; 
+            this.roundsWonPlayer++;
             this.playerCurrency += winnings;
-            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer); 
-            this.displayDeadPileCount(); 
+            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer);
+            this.displayDeadPileCount();
             this.gameOver = true;
+            return; // Exit the function early
         }
     
         // Check for a push condition
         if (playerValue === dealerValue) {
-            this.displayDealerHand(); // we will show the dealers hand because its a push
+            this.displayDealerHand(); // we will show the dealers hand because it's a push
             console.log("Push. Bet returned.");
             this.playerCurrency += this.currentBet; // push counts as a returned bet
-            this.displayDeadPileCount(); 
+            this.displayDeadPileCount();
             this.gameOver = true;
+            return; // Exit the function early
         }
+    
         // Logic for wins and losses //
         if (playerValue > 21 || (dealerValue <= 21 && dealerValue >= playerValue)) {
             // Player loses
             console.log("You lose.");
             this.roundsWonHouse++; // Increment rounds won for the house
             this.updateRoundsWon("house-rounds-won", this.roundsWonHouse); // Update rounds won for the house
-            this.displayDeadPileCount(); 
+            this.displayDeadPileCount();
+            this.gameOver = true;
         } else if (playerValue === 21 && this.playerHand.length === 2 && !(dealerValue === 21 && this.dealerHand.length === 2)) {
-            const winnings = this.currentBet * 2.5; // blackjack pays out 2.5 of initial bet
-            this.roundsWonPlayer++; 
+            const winnings = this.currentBet * 2.5; // blackjack pays out 2.5 of the initial bet
+            this.roundsWonPlayer++;
             this.playerCurrency += winnings;
-            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer); 
-            this.displayDeadPileCount(); 
+            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer);
+            this.displayDeadPileCount();
             console.log(`Blackjack! You win ${winnings}!`);
         } else {
             // Player wins
             const winnings = this.currentBet * 2;
-            this.roundsWonPlayer++; 
+            this.roundsWonPlayer++;
             this.playerCurrency += winnings;
-            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer); 
-            this.displayDeadPileCount(); 
+            this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer);
+            this.displayDeadPileCount();
             console.log(`You win ${winnings}!`);
         }
-        this.roundsWonHouse++; // dealer wins we had a round to its html element
-        this.gameOver = true;
+    
+        // The following line was removed to prevent double-setting gameOver
+        // this.gameOver = true;
+    
+        // this.roundsWonHouse--; // dealer wins we had a round to its HTML element
         this.displayDealerHand(); // Makes all cards and value visible
-
     }
     //Game Rule Logic//
 
