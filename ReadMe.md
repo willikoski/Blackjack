@@ -16,7 +16,7 @@
 
 - **House Rules if the card value is 17 or higher, house will stand.**
 
-- ![Test Image 8](https://raw.githubusercontent.com/tograh/testrepository/master/3DTest.png)
+- ![Image]([https://raw.githubusercontent.com/tograh/testrepository/master/3DTest.png](https://gyazo.com/066d0fe209fa940ef7645e602f69e5ab))
 
 ----------**Functionality of the game**------------
 
