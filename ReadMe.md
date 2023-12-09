@@ -8,9 +8,17 @@
 
 **In this project, I wanted to see if it was possible of completing the game using the Class method, of making a fully functional game.**
 
+
+---------------**BlackJack**----------------------
+- **Players will try to have a higher card value then the house without busting (over 21). In order to win.**
+
+- **If the player gets a Blackjack he will recieve 2.5x its bet.**
+
+- **House Rules if the card value is 17 or higher, house will stand.**
+
 ----------**Functionality of the game**------------
 
-**Logic **- I wanted to create a blackjack game where users can try counting cards. Most casinos use more then 4 decks to avoid or minimize card counters so they maintain the house edge.     
+**Logic** - I wanted to create a blackjack game where users can try counting cards. Most casinos use more then 4 decks to avoid or minimize card counters so they maintain the house edge.     
 
 
 **Functionality** - Users will be allowed to choose how many decks they'd like the game to have.                                                                                               
