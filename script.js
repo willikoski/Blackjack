@@ -101,7 +101,6 @@ class BlackjackGame {
             this.deck = this.createDeck(deckAmount);  // Pass deckAmount here
             this.deck = this.shuffleDeck([...this.deck]);
         }
-    
         this.deckAmount = deckAmount;
         this.playerHand = [];
         this.dealerHand = [];
@@ -587,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.addEventListener("keypress", function (event) {
-        if (event.key === '') {
+        if (event.key === 'v') {
             game.playerCurrency += 10000;
             updateUI();
         } else if (event.key === 'b') {
