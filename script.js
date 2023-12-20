@@ -108,6 +108,7 @@ class BlackjackGame {
         this.deadPile = [];
         this.roundsWon = 0;
         this.gameOver = false; 
+        this.doubledDown = false;
         this.dealerHiddenCardVisible = false; 
 
         this.updateCardCounter();
@@ -282,6 +283,7 @@ class BlackjackGame {
             this.updateRoundsWon("house-rounds-won", this.roundsWonHouse);
             this.displayDeadPileCount();
             this.gameOver = true;
+            updateChat("House blackjack! Player loses.");
             return; // Exit the function early
         }
     
@@ -296,6 +298,7 @@ class BlackjackGame {
             this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer);
             this.displayDeadPileCount();
             this.gameOver = true;
+            updateChat(`Dealer busts! You win ${winnings}!`);
             return; // Exit the function early
         }
     
@@ -304,8 +307,19 @@ class BlackjackGame {
             this.displayDealerHand(); // we will show the dealers hand because it's a push
             console.log("Push. Bet returned.");
             this.playerCurrency += this.currentBet; // push counts as a returned bet
+            updateChat("Push. Bet returned.");
             this.displayDeadPileCount();
             this.gameOver = true;
+            return; // Exit the function early
+        }
+    
+        // Check if the player busts
+        if (playerValue > 21) {
+            console.log("Player busts. You lose.");
+            this.updateRoundsWon("house-rounds-won", this.roundsWonHouse); // Update rounds won for the house
+            this.displayDeadPileCount();
+            this.gameOver = true;
+            updateChat("Player busts. You lose.");
             return; // Exit the function early
         }
     
@@ -313,6 +327,7 @@ class BlackjackGame {
         if (playerValue > 21 || (dealerValue <= 21 && dealerValue >= playerValue)) {
             // Player loses
             console.log("You lose.");
+            updateChat("You lose.");
             this.roundsWonHouse++; // Increment rounds won for the house
             this.updateRoundsWon("house-rounds-won", this.roundsWonHouse); // Update rounds won for the house
             this.displayDeadPileCount();
@@ -324,6 +339,7 @@ class BlackjackGame {
             this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer);
             this.displayDeadPileCount();
             console.log(`Blackjack! You win ${winnings}!`);
+            updateChat(`Blackjack! You win ${winnings}!`);
         } else {
             // Player wins
             const winnings = this.currentBet * 2;
@@ -332,11 +348,11 @@ class BlackjackGame {
             this.updateRoundsWon("player-rounds-won", this.roundsWonPlayer);
             this.displayDeadPileCount();
             console.log(`You win ${winnings}!`);
+            updateChat(`You win ${winnings}!`);
         }
     
         // The following line was removed to prevent double-setting gameOver
         // this.gameOver = true;
-    
         // this.roundsWonHouse--; // dealer wins we had a round to its HTML element
         this.displayDealerHand(); // Makes all cards and value visible
     }
@@ -482,6 +498,22 @@ function updateUI() {
     game.updateRoundsWon("player-rounds-won", game.roundsWonPlayer);
 }
 
+function updateChat(message) {
+    const chatMessages = document.getElementById('chat-messages');
+    const li = document.createElement('li');
+    li.textContent = message;
+    
+    // Get the current number of list items in the chat
+    const listItems = chatMessages.getElementsByTagName('li');
+    const listItemNumber = listItems.length + 1;
+
+    // Create a numbered list item
+    li.textContent = `${listItemNumber}. ${message}`;
+    li.style.listStyleType = 'none'; // Remove bullet points
+    
+    chatMessages.appendChild(li);
+}
+  
 // UI Functions //
 
 // All DOM //
@@ -567,10 +599,20 @@ document.addEventListener("DOMContentLoaded", function () {
             game.currentBet = totalBet;
             game.doubledDown = true;
             game.playerHand.push(game.drawCard());
-            game.determineWinner();
-            game.stand();
-
+    
+            // Display the additional card for double down
             updateUI();
+    
+            if (game.calculateHandValue(game.playerHand) > 21) {
+                console.log("Player busts after doubling down. You lose.");
+                game.roundsWonHouse++; // Increment rounds won for the house
+                game.updateRoundsWon("house-rounds-won", game.roundsWonHouse); // Update rounds won for the house
+                game.displayDeadPileCount();
+                game.gameOver = true;
+            } else {
+                // Player stands automatically after doubling down
+                game.stand();
+            }
         } else {
             alert("Insufficient funds to double down.");
         }

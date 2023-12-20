@@ -76,7 +76,11 @@ h3,
     text-align: center;
     background-color: darkslategray;
     border-radius: 15px;
-    opacity: .9;
+    opacity: 0.9;
+}
+
+.container-player {
+    opacity: 0.9 !important;
 }
 
 .card-house-start,
@@ -105,21 +109,22 @@ p {
 
 .house-rule-c {
     position: absolute;
-    top: 49.5%;
-    left: 30%;
+    top: 79%;
+    left: 26.15%;
     transform: translate(-50%, -50%);
-    margin-top: 500px;
-    max-width: 840px;
+    /* margin-top: 500px; */
+    width: 40; /* Adjust the width for responsiveness */
+    max-width: 700px; /* Set a maximum width */
+    max-height: 200px;
     border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
-    background-color: white;
+    background-color: yellow;
 }
-
 .action-buttons {
     position: absolute;
     top: 40%;
-    left: 70%;
+    left: 74.5%;
     transform: translate(-50%, -50%);
     margin-top: 500px;
     max-width: 600px;
@@ -187,7 +192,7 @@ label[for="bet-amount"] {
     font-weight: bold;
     position: absolute;
     top: 24.5%;
-    left: 69%;
+    left: 74%;
     transform: translate(-50%, -50%);
     color: white;
     margin: 10px; 
@@ -196,7 +201,7 @@ label[for="bet-amount"] {
 .dead-pile {
     position: absolute;
     top: 87%;
-    left: 70%;
+    left: 74.5%;
     transform: translate(-50%, -50%);
 }
 
@@ -280,4 +285,18 @@ label[for="music-all"] {
     width: 20px;
     height: 20px;
     border: 2px solid blue; 
+}
+
+.chat-box {
+    background-color: darkslategray;
+    opacity: .9;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+.chat-box li {
+    font-size: 20px;
+    font-weight: bold;
 }
